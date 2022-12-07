@@ -7,7 +7,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.TankStars;
+import sun.awt.image.GifImageDecoder;
 
 import javax.swing.text.View;
 import java.awt.*;
@@ -26,6 +29,9 @@ public class HomeScreen implements Screen {
     private TankStars game;
     private Viewport gamePort;
     private OrthographicCamera gameCam;
+
+    private Animation<TextureRegion> animation;
+    private float elapsed;
     private Stage stage;
     private TextButton settings;
     private TextButton START_GAME;
@@ -52,8 +58,6 @@ public class HomeScreen implements Screen {
     }
     @Override
     public void show() {
-
-
         START_GAME.setSize(300, 100);
         START_GAME.setPosition(820, 470);
 
