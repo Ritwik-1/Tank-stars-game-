@@ -64,7 +64,7 @@ public class GameScreen implements Screen {
 
     private World world;
     private Box2DDebugRenderer debugRenderer;
-    private Box2DDebugRenderer b2dr;
+//    private Box2DDebugRenderer b2dr;
     private Missile missile;
 
     private Tank tank;
@@ -84,13 +84,16 @@ public class GameScreen implements Screen {
         gamePort = new FitViewport(1200,700,gameCam);
         gameCam.position.set(gamePort.getWorldWidth()/2,gamePort.getWorldHeight()/2,0);
         stage = new Stage(gamePort);
-        world = new World(new Vector2(0,-10),true);
+
+//        world = new World(new Vector2(0,-10),true);
+
         maploader = new TmxMapLoader();
         map = maploader.load("untitledmap.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
-//        debugRenderer = new Box2DDebugRenderer();
-//        world = new World(new Vector2(0,-100),true);
-        b2dr = new Box2DDebugRenderer();
+
+        debugRenderer = new Box2DDebugRenderer();
+        world = new World(new Vector2(0,-100),true);
+//        b2dr = new Box2DDebugRenderer();
 
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -138,7 +141,7 @@ public class GameScreen implements Screen {
         });
 
           // MADE A TANK AND ASSIGNED IT TO A PLAYER
-          tank = new Tank(this,100,107,1);
+          tank = new Tank(this,100,300,1);
 
           player1 = new Game_Player(tank);
 
@@ -172,7 +175,7 @@ public class GameScreen implements Screen {
         gameCam.update();
         renderer.setView(gameCam);
         renderer.render();
-        b2dr.render(world,gameCam.combined);
+//        b2dr.render(world,gameCam.combined);
         game.batch.setProjectionMatrix(gameCam.combined);
 //        game.batch.begin();
 //        game.batch.draw(texture,0,0);
@@ -188,15 +191,15 @@ public class GameScreen implements Screen {
 //            player1.fireMissile(this);
 //        }
 
-//        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && tank.getBody().getPosition().x<1200 && tank.getBody().getPosition().y<700){
-//            tank.getBody().applyForceToCenter(10000,0,true);
-//        }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && tank.getBody().getPosition().x<1200 && tank.getBody().getPosition().y<700){
+            tank.getBody().applyForceToCenter(1000000,0,true);
+        }
 //        else if(Gdx.input.isKeyPressed(Input.Keys.D) && pos.x<1200 && pos.y<700 ){
 //            tank.getBody().applyForceToCenter(100000000,0,true);
 //        }
-//        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && pos.x>0 && pos.y>0){
-//            missile.getBody().applyForceToCenter(-1000,0,true);
-//        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && tank.getBody().getPosition().x>0 && tank.getBody().getPosition().y>0){
+            tank.getBody().applyForceToCenter(-1000000,0,true);
+        }
 //        else if (Gdx.input.isKeyPressed(Input.Keys.A) && pos.x>0 && pos.y>0){
 //            tank.getBody().applyForceToCenter(-100000000,0,true);
 //        }
