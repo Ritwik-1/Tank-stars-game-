@@ -48,28 +48,25 @@ public class GameScreen implements Screen {
     private Tank tank;
 
     private Body ground;
-    private PolygonShape groundBox;
+//    private PolygonShape groundBox;
 
-
-//    private TmxMapLoader maploader;
-//    private TiledMap map;
-//    private OrthogonalTiledMapRenderer renderer;
+    private TmxMapLoader maploader;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
 
      GameScreen(TankStars game){
         this.game = game;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(1200,700,gameCam);
-
-        stage = new Stage(gamePort);
-
-
-        world = new World(new Vector2(0,-100),true);
-        debugRenderer = new Box2DDebugRenderer();
-
-//        renderer = new OrthogonalTiledMapRenderer(map);
-
         gameCam.position.set(gamePort.getWorldWidth()/2,gamePort.getWorldHeight()/2,0);
+        stage = new Stage(gamePort);
+        world = new World(new Vector2(0,-100),true);
+        maploader = new TmxMapLoader();
+        map = maploader.load("untitledmap.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map);
+        debugRenderer = new Box2DDebugRenderer();
     }
+
 
     public World getWorld(){
          return world;
@@ -97,21 +94,19 @@ public class GameScreen implements Screen {
                 game.setScreen(new InGameMenu(game));
             }
         });
-//        maploader = new TmxMapLoader();
-//        map = maploader.load("Final.tmx");
 
           // MADE A TANK AND ASSIGNED IT TO A PLAYER
           tank = new Tank(this,100,107,1);
 
           player1 = new Game_Player(tank);
 
-//          THIS IS A STATIC BODY FOR THE GROUND
-          BodyDef groundBodyDef = new BodyDef();
-          groundBodyDef.position.set(new Vector2(0,50));
-          ground = world.createBody(groundBodyDef);
-          groundBox = new PolygonShape();
-          groundBox.setAsBox(gameCam.viewportWidth,50.0f);
-          ground.createFixture(groundBox,0.0f);
+////          THIS IS A STATIC BODY FOR THE GROUND
+//          BodyDef groundBodyDef = new BodyDef();
+//          groundBodyDef.position.set(new Vector2(0,50));
+//          ground = world.createBody(groundBodyDef);
+//          groundBox = new PolygonShape();
+//          groundBox.setAsBox(gameCam.viewportWidth,50.0f);
+//          ground.createFixture(groundBox,0.0f);
 
 //        Gdx.input.setInputProcessor(new InputAdapter() {
 //            @Override
@@ -126,14 +121,16 @@ public class GameScreen implements Screen {
 
     }
 
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//        renderer.render();
-//        game.batch.setProjectionMatrix(gameCam.combined);
-
+        gameCam.update();
+        renderer.setView(gameCam);
+        renderer.render();
+        game.batch.setProjectionMatrix(gameCam.combined);
 //        game.batch.begin();
 //        game.batch.draw(texture,0,0);
 //        game.batch.draw(play1,170,186);
@@ -144,12 +141,12 @@ public class GameScreen implements Screen {
 
         debugRenderer.render(world, gameCam.combined);
 
-        if(Gdx.input.isTouched()){
-            player1.fireMissile(this);
-        }
+//        if(Gdx.input.isTouched()){
+//            player1.fireMissile(this);
+//        }
 
-//        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && pos.x<1200 && pos.y<700){
-//            missile.getBody().applyForceToCenter(10000,0,true);
+//        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && tank.getBody().getPosition().x<1200 && tank.getBody().getPosition().y<700){
+//            tank.getBody().applyForceToCenter(10000,0,true);
 //        }
 //        else if(Gdx.input.isKeyPressed(Input.Keys.D) && pos.x<1200 && pos.y<700 ){
 //            tank.getBody().applyForceToCenter(100000000,0,true);
@@ -169,8 +166,8 @@ public class GameScreen implements Screen {
         world.step(1/60f, 6, 2);
 
 
-//        stage.act();
-//        stage.draw();
+        stage.act();
+        stage.draw();
 
     }
 
@@ -196,6 +193,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-         groundBox.dispose();
+//         groundBox.dispose();
     }
 }

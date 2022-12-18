@@ -1,0 +1,51 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "untitledmap.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "bgpic.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "terrainpic.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "untitledmap.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 524,
+                "y": 541
+            }
+        }
+    },
+    "last.exportedFilePath": "C:/Users/bvibh/OneDrive/Desktop",
+    "last.imagePath": "C:/Users/bvibh/OneDrive/Desktop/Latest Tiled",
+    "map.height": 150,
+    "map.lastUsedExportFilter": "All Files (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 5,
+    "map.tileWidth": 5,
+    "map.width": 240,
+    "openFiles": [
+        "untitledmap.tmx",
+        "bgpic.tsx",
+        "terrainpic.tsx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "terrainpic.tsx",
+        "bgpic.tsx",
+        "untitledmap.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 5,
+        "width": 5
+    }
+}
