@@ -5,10 +5,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,7 +25,25 @@ import com.mygdx.game.Game_Classes.Game_Player;
 import com.mygdx.game.Game_Classes.Missile;
 import com.mygdx.game.Game_Classes.Tank;
 import com.mygdx.game.TankStars;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import org.w3c.dom.Text;
+import java.util.PriorityQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GameScreen implements Screen {
     private TankStars game;
@@ -43,6 +64,7 @@ public class GameScreen implements Screen {
 
     private World world;
     private Box2DDebugRenderer debugRenderer;
+    private Box2DDebugRenderer b2dr;
     private Missile missile;
 
     private Tank tank;
@@ -54,17 +76,37 @@ public class GameScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
+
+
      GameScreen(TankStars game){
         this.game = game;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(1200,700,gameCam);
         gameCam.position.set(gamePort.getWorldWidth()/2,gamePort.getWorldHeight()/2,0);
         stage = new Stage(gamePort);
-        world = new World(new Vector2(0,-100),true);
+        world = new World(new Vector2(0,-10),true);
         maploader = new TmxMapLoader();
         map = maploader.load("untitledmap.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
-        debugRenderer = new Box2DDebugRenderer();
+//        debugRenderer = new Box2DDebugRenderer();
+//        world = new World(new Vector2(0,-100),true);
+        b2dr = new Box2DDebugRenderer();
+
+        BodyDef bdef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fdef = new FixtureDef();
+        Body body;
+
+        for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set(rect.getX() + rect.getWidth()/2, rect.getY()+ rect.getHeight()/2);
+            body = world.createBody(bdef);
+
+            shape.setAsBox(rect.getWidth() / 2, rect.getHeight()/ 2);
+            fdef.shape = shape;
+            body.createFixture(fdef);
+        }
     }
 
 
@@ -130,6 +172,7 @@ public class GameScreen implements Screen {
         gameCam.update();
         renderer.setView(gameCam);
         renderer.render();
+        b2dr.render(world,gameCam.combined);
         game.batch.setProjectionMatrix(gameCam.combined);
 //        game.batch.begin();
 //        game.batch.draw(texture,0,0);
