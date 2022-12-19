@@ -92,7 +92,7 @@ public class GameScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map);
 
         debugRenderer = new Box2DDebugRenderer();
-        world = new World(new Vector2(0,-100),true);
+        world = new World(new Vector2(0,-50),true);
 //        b2dr = new Box2DDebugRenderer();
 
         BodyDef bdef = new BodyDef();
@@ -108,6 +108,9 @@ public class GameScreen implements Screen {
 
             shape.setAsBox(rect.getWidth() / 2, rect.getHeight()/ 2);
             fdef.shape = shape;
+            fdef.density = 2f;
+            fdef.friction = 0.9f;
+            fdef.restitution = 0;
             body.createFixture(fdef);
         }
     }
@@ -141,7 +144,10 @@ public class GameScreen implements Screen {
         });
 
           // MADE A TANK AND ASSIGNED IT TO A PLAYER
-          tank = new Tank(this,100,300,1);
+          tank = new Tank(this,100,272,1);
+          tank.setDensity(5f);
+          tank.setFriction(2f);
+          tank.setRestitution(0);
 
           player1 = new Game_Player(tank);
 
@@ -192,13 +198,14 @@ public class GameScreen implements Screen {
 //        }
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && tank.getBody().getPosition().x<1200 && tank.getBody().getPosition().y<700){
-            tank.getBody().applyForceToCenter(1000000,0,true);
+            tank.getBody().applyForceToCenter(new Vector2(12000,0),true);
+
         }
 //        else if(Gdx.input.isKeyPressed(Input.Keys.D) && pos.x<1200 && pos.y<700 ){
 //            tank.getBody().applyForceToCenter(100000000,0,true);
 //        }
         else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && tank.getBody().getPosition().x>0 && tank.getBody().getPosition().y>0){
-            tank.getBody().applyForceToCenter(-1000000,0,true);
+            tank.getBody().applyForceToCenter(new Vector2(-12000,0),true);
         }
 //        else if (Gdx.input.isKeyPressed(Input.Keys.A) && pos.x>0 && pos.y>0){
 //            tank.getBody().applyForceToCenter(-100000000,0,true);
