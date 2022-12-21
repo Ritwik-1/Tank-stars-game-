@@ -14,7 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Game_Classes.Game_Player;
 import com.mygdx.game.Game_Classes.Game_start;
+import com.mygdx.game.Game_Classes.Serializ_functions;
+import com.mygdx.game.Game_Classes.Serialize_attributes;
 import com.mygdx.game.TankStars;
 
 import java.io.FileOutputStream;
@@ -51,17 +54,7 @@ public class InGameMenu implements Screen {
         EXIT_GAME = new TextButton("EXIT GAME",s);
     }
 
-    public void serialize() throws IOException{
-        Game_start g1 = Ongame;
-        ObjectOutputStream out = null;
-        try{
-            out = new ObjectOutputStream(new FileOutputStream("out.txt"));
-            out.writeObject(g1);
-        }
-        finally {
-            out.close();
-        }
-    }
+
 
 
     @Override
@@ -103,7 +96,12 @@ public class InGameMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 try {
-                    serialize();
+                    Serialize_attributes s = new Serialize_attributes();
+                    s.setPlayer1_Pos_x(Ongame.getPlayer1().getPlayer_tank().getX());
+                    s.setPlayer2_Pos_y(Ongame.getPlayer2().getPlayer_tank().getY());
+                    s.setPlayer1_Pos_y(Ongame.getPlayer1().getPlayer_tank().getY());
+                    s.setPlayer2_Pos_x(Ongame.getPlayer2().getPlayer_tank().getX());
+                    Serializ_functions.serialize();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

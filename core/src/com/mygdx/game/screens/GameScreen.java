@@ -172,27 +172,20 @@ public class GameScreen implements Screen {
         FIRE1.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(flagForMissile1 == 0){
-//                    System.out.println("I am in FIRE1");
                     missile = new Missile(gg, tank1.getBody().getPosition().x+5, tank1.getBody().getPosition().y+5);
                     player1.fireMissile(missile,Player1_vx,Player1_vy);
-                    System.out.println("Missile fired!!");
                     flagForMissile1 = 1;
-//                    System.out.println("I am after flagForMissile1");
-//                    System.out.println("flag1 : "+flagForMissile1);
-                }
-
+                    Turn = 2;
             }
         });
 
         FIRE2.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(flagForMissile2 == 0){
                     flagForMissile2 = 1;
                     Missile missile = new Missile(gg,tank2.getBody().getPosition().x+5,tank2.getBody().getPosition().y+5);
                     player2.fireMissile(missile,Player2_vx,Player2_vy);
-                }
+                    Turn = 1;
             }
         });
 
@@ -242,49 +235,30 @@ public class GameScreen implements Screen {
             stage.addActor(FIRE1);
             stage.addActor(FIRE2);
 
-////          THIS IS A STATIC BODY FOR THE GROUND
-//          BodyDef groundBodyDef = new BodyDef();
-//          groundBodyDef.position.set(new Vector2(0,50));
-//          ground = world.createBody(groundBodyDef);
-//          groundBox = new PolygonShape();
-//          groundBox.setAsBox(gameCam.viewportWidth,50.0f);
-//          ground.createFixture(groundBox,0.0f);
-
-//        Gdx.input.setInputProcessor(new InputAdapter() {
-//            @Override
-//            public boolean keyDown(int keyCode) {
-//                if (keyCode == Input.Keys.SPACE) {
-//                    game.setScreen(new InGameMenu(game));
-//                }
-//                return true;
-//            }
-//        });
-
-
     }
 
     public void Play_Game(float delta){
         if(Turn == 1){
-//                player2.getPlayer_tank().getBodyDef().type = BodyDef.BodyType.StaticBody;
             player2.getPlayer_tank().getBody().setLinearVelocity(new Vector2(0,0));
-            System.out.println("This is in render flag1 :"+flagForMissile1);
-            if(flagForMissile1 == 1){
-                System.out.println("Entered here in flagforM1");
-                float TimeOfFlight = (2*(Player1_vy))/(50);
-                System.out.println("Time of Flight : "+TimeOfFlight);
-//                while(time < (TimeOfFlight)){
-//                    time = time + delta;
-//                    System.out.println("Time : "+time);
-//                }
-                time = time + delta;
+//            world.destroyBody(missile.getBody());
+//            System.out.println("This is in render flag1 :"+flagForMissile1);
+//            if(flagForMissile1 == 1){
+//                System.out.println("Entered here in flagforM1");
+//                float TimeOfFlight = (2*(Player1_vy))/(50);
+//                System.out.println("Time of Flight : "+TimeOfFlight);
+////                while(time < (TimeOfFlight)){
+////                    time = time + delta;
+////                    System.out.println("Time : "+time);
+////                }
+//                time = time + delta;
+//
+//                System.out.println("Destroying missile");
+//                world.destroyBody(missile.getBody());
+//                System.out.println("Destroyed missile");
 
-                System.out.println("Destroying missile");
-                world.destroyBody(missile.getBody());
-                System.out.println("Destroyed missile");
-                Turn = 2;
-                time = 0;
-                flagForMissile1 = 0;
-            }
+//                time = 0;
+//                flagForMissile1 = 0;
+//            }
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && tank1.getBody().getPosition().x<1200 && tank1.getBody().getPosition().y<700){
                 player1.getPlayer_tank().getBody().applyForceToCenter(new Vector2(12000,0),true);
 
@@ -296,16 +270,12 @@ public class GameScreen implements Screen {
         }
         else {
             player1.getPlayer_tank().getBody().setLinearVelocity(new Vector2(0,0));
-//                player1.getPlayer_tank().getBodyDef().type = BodyDef.BodyType.StaticBody;
-            if(flagForMissile2 == 1){
-                float TimeOfFlight = (2*(Player2_vy))/(-1*world.getGravity().y);
-                while((time + delta) < TimeOfFlight){
-                }
-                world.destroyBody(missile.getBody());
-                time = 0;
-                Turn = 1;
-                flagForMissile2 = 0;
-            }
+//            if(flagForMissile2 == 1){
+//                float TimeOfFlight = (2*(Player2_vy))/(-1*world.getGravity().y);
+//                world.destroyBody(missile.getBody());
+//                time = 0;
+//                flagForMissile2 = 0;
+//            }
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && tank1.getBody().getPosition().x<1200 && tank1.getBody().getPosition().y<700){
                 player2.getPlayer_tank().getBody().applyForceToCenter(new Vector2(12000,0),true);
 

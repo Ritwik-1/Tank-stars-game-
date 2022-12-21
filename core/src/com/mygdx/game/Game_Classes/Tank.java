@@ -62,7 +62,7 @@ public class Tank extends General_Body{
 
             tank2Sprite = new Sprite(new Texture("GameScreenTank2_1.png"));
             tank2Sprite.setOrigin(tank2Sprite.getHeight()/2,tank2Sprite.getWidth()/2);
-            tank2Sprite.setSize(80,52);
+            tank2Sprite.setSize(100,90);
             this.getBody().setUserData(tank2Sprite);
         }
         else if (Tank_number == 3) {

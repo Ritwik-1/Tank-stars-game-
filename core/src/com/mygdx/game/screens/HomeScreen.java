@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Game_Classes.Game_Player;
 import com.mygdx.game.Game_Classes.Game_start;
+import com.mygdx.game.Game_Classes.Serializ_functions;
 import com.mygdx.game.TankStars;
 import sun.awt.image.GifImageDecoder;
 
@@ -32,18 +33,7 @@ import java.io.ObjectInputStream;
 
 public class HomeScreen implements Screen {
 
-    public static Game_start deserialize() throws IOException,ClassNotFoundException{
-        ObjectInputStream in = null;
-        Game_start g1 = null;
-        try{
-            in = new ObjectInputStream(new FileInputStream("out.txt"));
-            g1 =(Game_start) in.readObject();
-        }
-        finally {
-            in.close();
-        }
-        return g1;
-    }
+
     private TankStars game;
     private Viewport gamePort;
     private OrthographicCamera gameCam;
@@ -114,7 +104,7 @@ public class HomeScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 try {
-                    game.setScreen(new GameScreen(game,deserialize()));
+                    Serializ_functions.deserialize();
                 } catch (IOException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
