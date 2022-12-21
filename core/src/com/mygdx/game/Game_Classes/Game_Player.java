@@ -8,21 +8,25 @@ public class Game_Player {
 
     private Tank player_tank;
 
-    private float player_health;
+    private float player_health = 30;
 
 //    MORE ATTRIBUTES TO BE ADDED
 
-    public Game_Player(Tank t){
-        this.player_tank = t;
-//        code to be written
+    public Game_Player(){
     }
 
-    public void setTank(int tankNUmber){
-//        code to be written
+    public void setTank(Tank tank){
+        this.player_tank = tank;
     }
 
-    public void fireMissile(GameScreen g){
-        Missile missile = new Missile(g,this.player_tank.getBody().getPosition().x+4,this.player_tank.getBody().getPosition().y+4);
-        missile.getBody().setLinearVelocity(new Vector2(200,300));
+    public void fireMissile(Missile missile,float vx,float vy){
+//        System.out.println("Player tanks x :"+player_tank.getX());
+//        System.out.println("Player tanks y :"+player_tank.getY());
+//        missile.setMissilePos(player_tank.getX()+10,player_tank.getY()+1000);
+        missile.getBody().setLinearVelocity(new Vector2(vx,vy));
+    }
+
+    public Tank getPlayer_tank(){
+        return player_tank;
     }
 }

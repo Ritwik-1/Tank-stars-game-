@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.TankStars;
 
 public class SettingsMain implements Screen {
+    private static SettingsMain ins = null;
     private TankStars game;
     private Viewport gamePort;
     private OrthographicCamera gameCam;
@@ -26,7 +27,7 @@ public class SettingsMain implements Screen {
     private TextButton MUSIC;
     private TextButton MAIN_MENU;
     private TextButton TERMS;
-    public SettingsMain(TankStars game){
+    private SettingsMain(TankStars game){
         this.game = game;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(1200,700,gameCam);
@@ -38,6 +39,15 @@ public class SettingsMain implements Screen {
         MAIN_MENU= new TextButton("MAIN MENU",s);
         TERMS= new TextButton("TERMS AND PRIVACY",s);
     }
+
+//    SINGLETON PATTERN : PATTERN 1;
+
+    public static SettingsMain getInstance(TankStars game){
+        if(ins == null){
+            ins = new SettingsMain(game);
+        }
+        return ins;
+    }
     @Override
     public void show() {
         stage = new Stage();
@@ -46,7 +56,7 @@ public class SettingsMain implements Screen {
         gameCam.setToOrtho(false,1200,700);
         game.batch = new SpriteBatch();
 
-        PauseMenu = new Texture(Gdx.files.internal("Settings.png"));
+        PauseMenu = new Texture(Gdx.files.internal("Settings_Heading.png"));
 
         SOUND.setSize(300, 100);
         SOUND.setPosition(Gdx.graphics.getWidth()/2 -150, 490);

@@ -14,7 +14,6 @@ public class General_Body {
 
     public General_Body(){
         bodyDef = new BodyDef();
-
         fixtureDef = new FixtureDef();
         fixtureDef.restitution = restitution;
         fixtureDef.friction = friction;
@@ -44,5 +43,9 @@ public class General_Body {
 
     public float getDensity() {
         return density;
+    }
+
+    public BodyDef getBodyDef(){
+        return bodyDef;
     }
 }

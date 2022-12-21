@@ -14,12 +14,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Game_Classes.Game_start;
 import com.mygdx.game.TankStars;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class InGameMenu implements Screen {
     private TankStars game;
     private Viewport gamePort;
     private OrthographicCamera gameCam;
+
+    private Game_start Ongame;
 
     private Stage stage;
     private Texture PauseMenu;
@@ -28,8 +35,11 @@ public class InGameMenu implements Screen {
     private TextButton MAIN_MENU;
     private TextButton EXIT_GAME;
 
-    public InGameMenu(TankStars game){
+
+
+    public InGameMenu(TankStars game, Game_start game_start){
         this.game = game;
+        this.Ongame = game_start;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(1200,700,gameCam);
 
@@ -41,6 +51,18 @@ public class InGameMenu implements Screen {
         EXIT_GAME = new TextButton("EXIT GAME",s);
     }
 
+    public void serialize() throws IOException{
+        Game_start g1 = Ongame;
+        ObjectOutputStream out = null;
+        try{
+            out = new ObjectOutputStream(new FileOutputStream("out.txt"));
+            out.writeObject(g1);
+        }
+        finally {
+            out.close();
+        }
+    }
+
 
     @Override
     public void show() {
@@ -50,7 +72,7 @@ public class InGameMenu implements Screen {
         gameCam.setToOrtho(false,1200,700);
         game.batch = new SpriteBatch();
 
-        PauseMenu = new Texture(Gdx.files.internal("PauseMenu2.png"));
+        PauseMenu = new Texture(Gdx.files.internal("PauseMenu_Heading.png"));
 
         RESUME_GAME.setSize(300, 100);
         RESUME_GAME.setPosition(Gdx.graphics.getWidth()/2 -150, 490);
@@ -74,14 +96,18 @@ public class InGameMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game,Ongame));
             }
         });
         SAVE_GAME.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                game.setScreen(new SavedGames(game));
+                try {
+                    serialize();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                game.setScreen(new SavedGames(game,Ongame));
             }
         });
         MAIN_MENU.addListener(new ClickListener(){

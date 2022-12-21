@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Game_Classes.Game_start;
 import com.mygdx.game.TankStars;
 
 public class SavedGames implements Screen {
@@ -30,8 +31,11 @@ public class SavedGames implements Screen {
     private TextButton back;
     private Stage stage;
 
-    public SavedGames(TankStars game){
+    private Game_start Ongame;
+
+    public SavedGames(TankStars game, Game_start game_start){
         this.game = game;
+        this.Ongame = game_start;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(1200,700,gameCam);
 
@@ -52,7 +56,7 @@ public class SavedGames implements Screen {
         gameCam.setToOrtho(false,1200,700);
         game.batch = new SpriteBatch();
 
-        saved = new Texture("saved.png");
+        saved = new Texture("saved_Heading.png");
 
         GAME1.setSize(400, 200);
         GAME1.setPosition(150, 350);
@@ -82,26 +86,26 @@ public class SavedGames implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game,Ongame));
             }
         });
         GAME2.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game,Ongame));
             }
         });
         GAME3.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game,Ongame));
             }
         });
         GAME4.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game,Ongame));
             }
         });
         back.addListener(new ClickListener(){

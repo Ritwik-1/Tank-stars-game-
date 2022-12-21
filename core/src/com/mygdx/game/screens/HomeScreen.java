@@ -18,14 +18,32 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Game_Classes.Game_Player;
+import com.mygdx.game.Game_Classes.Game_start;
 import com.mygdx.game.TankStars;
 import sun.awt.image.GifImageDecoder;
 
 import javax.swing.text.View;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 
 public class HomeScreen implements Screen {
+
+    public static Game_start deserialize() throws IOException,ClassNotFoundException{
+        ObjectInputStream in = null;
+        Game_start g1 = null;
+        try{
+            in = new ObjectInputStream(new FileInputStream("out.txt"));
+            g1 =(Game_start) in.readObject();
+        }
+        finally {
+            in.close();
+        }
+        return g1;
+    }
     private TankStars game;
     private Viewport gamePort;
     private OrthographicCamera gameCam;
@@ -75,7 +93,7 @@ public class HomeScreen implements Screen {
         stage.addActor(EXIT_GAME);
         stage.addActor(settings);
 
-        backgroundImage = new Texture(Gdx.files.internal("Tank_Stars_home.jpg"));
+        backgroundImage = new Texture(Gdx.files.internal("Homepage_Back.jpg"));
 
 
         gameCam = new OrthographicCamera();
@@ -86,15 +104,20 @@ public class HomeScreen implements Screen {
         START_GAME.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                game.setScreen(new ChooseTanks(game));
+                Game_Player p1 = new Game_Player();
+                Game_Player p2 = new Game_Player();
+                Game_start game_start = new Game_start(p1,p2);
+                game.setScreen(new ChooseTanks(game,game_start));
             }
         });
         RESUME_GAME.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                game.setScreen(new SavedGames(game));
+                try {
+                    game.setScreen(new GameScreen(game,deserialize()));
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         EXIT_GAME.addListener(new ClickListener(){
@@ -106,7 +129,7 @@ public class HomeScreen implements Screen {
         settings.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SettingsMain(game));
+                game.setScreen(SettingsMain.getInstance(game));
             }
         });
 
@@ -126,8 +149,6 @@ public class HomeScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(gameCam.combined);
-
-
 
         game.batch.begin();
         game.batch.draw(backgroundImage,0,0);
